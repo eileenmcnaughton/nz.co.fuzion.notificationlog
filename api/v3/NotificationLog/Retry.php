@@ -42,11 +42,14 @@ function _civicrm_api3_notification_log_process($logEntry) {
     );
     $anet->main();
   }
-  else {
-    $anet = new CRM_Core_Payment_AuthorizeNetIPN(
+  elseif($logEntry['message'] =='payment_notification processor_name=PayPal') {
+    $payPal = new CRM_Core_Payment_PayPalProIPN(
       array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']))
     );
-    $anet->main();
+    $payPal->main();
+  }
+  else {
+    throw new API_Exception('unsupported processor');
   }
   return TRUE;
 }
