@@ -34,6 +34,7 @@ function civicrm_api3_notification_log_retry($params) {
  * @param array $logEntry
  *
  * @return bool
+ * @throws \API_Exception
  */
 function _civicrm_api3_notification_log_process($logEntry) {
   if ($logEntry['message'] == 'payment_notification processor_name=AuthNet') {
@@ -42,7 +43,7 @@ function _civicrm_api3_notification_log_process($logEntry) {
     );
     $anet->main();
   }
-  elseif($logEntry['message'] =='payment_notification processor_name=PayPal') {
+  elseif ($logEntry['message'] == 'payment_notification processor_name=PayPal') {
     $payPal = new CRM_Core_Payment_PayPalProIPN(
       array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']))
     );
