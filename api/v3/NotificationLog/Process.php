@@ -38,8 +38,8 @@ function civicrm_api3_notification_log_process($params) {
 function _civicrm_api3_notification_log_process_spec(&$params) {
   $params['start_time']['api.default'] = '-24 hours';
   $params['start_time']['title'] = ts('Start Time');
-  $params['start_time']['type'] = CRM_Utils_Type::T_DATE;
+  $params['start_time']['type'] = CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME;
   $params['end_time']['api.default'] = 'now';
   $params['end_time']['title'] = ts('End Time');
-  $params['end_time']['type'] = CRM_Utils_Type::T_DATE;
+  $params['end_time']['type'] = CRM_Utils_Type::T_DATE + CRM_Utils_Type::T_TIME;
 }
