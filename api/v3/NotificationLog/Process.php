@@ -13,6 +13,7 @@
  */
 function civicrm_api3_notification_log_process($params) {
   $logs = civicrm_api3('SystemLog', 'get', array('timestamp' => array('BETWEEN' => array($params['start_time'], $params['end_time']))));
+  $errors = array();
   foreach ($logs['values'] as $id => $values) {
     try {
       civicrm_api3('NotificationLog', 'retry', array('system_log_id' => $values['id']));
@@ -22,7 +23,7 @@ function civicrm_api3_notification_log_process($params) {
         $logs['values'][$id]['already_processed'] = TRUE;
       }
       else {
-        throw new CiviCRM_API3_Exception($e->getMessage());
+        $logs['values'][$id]['error'] = $e->getMessage();
       }
     }
   }
