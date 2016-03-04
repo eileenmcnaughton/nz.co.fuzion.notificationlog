@@ -25,11 +25,6 @@ function civicrm_api3_notification_log_retryfromcsv($params) {
       $response[$headers[$j]] = $entry;
     }
 
-    // Only process recurring transactions
-    if ($response['Recurring Billing Transaction'] != 'Y') {
-      continue;
-    }
-
     // Get subscription_id
     $subscription_id = CRM_Core_DAO::singleValueQuery("SELECT processor_id FROM civicrm_contribution_recur r 
                                     LEFT JOIN civicrm_contribution c 
