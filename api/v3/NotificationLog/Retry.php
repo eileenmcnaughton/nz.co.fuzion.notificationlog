@@ -49,6 +49,12 @@ function _civicrm_api3_notification_log_process($logEntry) {
     );
     $payPal->main();
   }
+  elseif ($logEntry['message'] == 'payment_notification PayPal_Standard') {
+    $payPal = new CRM_Core_Payment_PayPalIPN(
+      array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']))
+    );
+    $payPal->main();
+  }
   else {
     throw new API_Exception('unsupported processor');
   }
