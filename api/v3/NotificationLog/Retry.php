@@ -60,7 +60,7 @@ function _civicrm_api3_notification_log_process($logEntry) {
     $class = civicrm_api3('PaymentProcessor', 'getvalue', array('id' => $processorID, 'return' => 'class_name'));
     if ($class == 'Payment_AuthorizeNet') {
       $anet = new CRM_Core_Payment_AuthorizeNetIPN(
-        array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']))
+        array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp'], 'processor_id' => $processorID))
       );
       $anet->main();
     }
