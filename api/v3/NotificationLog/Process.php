@@ -12,7 +12,12 @@
  * @throws \CiviCRM_API3_Exception
  */
 function civicrm_api3_notification_log_process($params) {
-  $logs = civicrm_api3('SystemLog', 'get', array('timestamp' => array('BETWEEN' => array($params['start_time'], $params['end_time']))));
+  $logs = civicrm_api3('SystemLog', 'get', array(
+    'options' => array('limit' => 0),
+    'timestamp' => array(
+      'BETWEEN' => array($params['start_time'], $params['end_time']),
+    ),
+  ));
   $errors = array();
   foreach ($logs['values'] as $id => $values) {
     try {
