@@ -17,7 +17,7 @@ function civicrm_api3_notification_log_restorecontribution($params) {
   $queryParams = array(1 => array($params['id'], 'Integer'));
   $query = array();
   $contributionResult = CRM_Core_DAO::executeQuery(
-    "SELECT * FROM log_civicrm_contribution WHERE id = %1 AND log_action != 'Delete'",
+    "SELECT * FROM log_civicrm_contribution WHERE id = %1 AND log_action = 'Delete'",
     $queryParams
   );
   $contributionFields = civicrm_api3('contribution', 'getfields', array('action' => 'create'));
@@ -30,7 +30,9 @@ function civicrm_api3_notification_log_restorecontribution($params) {
     $insertParams = array();
     foreach ($contributionFields['values'] as $field => $spec) {
       if (!empty($contributionResult->$field)) {
-        $insertParams[$field] = "'" . $contributionResult->$field . "'";
+        if ($field != 'address_id') {
+          $insertParams[$field] = "'" . $contributionResult->$field . "'";
+        }
       }
     }
     $query[] = "INSERT INTO civicrm_contribution (" . implode(',', array_keys($insertParams))
@@ -51,6 +53,9 @@ function civicrm_api3_notification_log_restorecontribution($params) {
         . ") values (" . implode(',', $insertParams) . ')';
     }
 
+    foreach ($query as $sql) {
+      CRM_Core_DAO::executeQuery($sql);
+    }
     print_r($query);
   }
 }
