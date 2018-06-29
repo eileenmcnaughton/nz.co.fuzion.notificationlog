@@ -44,16 +44,16 @@ function _civicrm_api3_notification_log_process($logEntry) {
     $anet->main();
   }
   elseif ($logEntry['message'] == 'payment_notification processor_name=PayPal') {
-    $payPal = new CRM_Core_Payment_PayPalProIPN(
+    $payPalPro = new CRM_Core_Payment_PayPalProIPN(
       array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']))
     );
-    $payPal->main();
+    $payPalPro->main();
   }
   elseif ($logEntry['message'] == 'payment_notification PayPal_Standard') {
-    $payPal = new CRM_Core_Payment_PayPalIPN(
+    $payPalStandard = new CRM_Core_Payment_PayPalIPN(
       array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']))
     );
-    $payPal->main();
+    $payPalStandard->main();
   }
   elseif (substr($logEntry['message'], 0, 34) == 'payment_notification processor_id=') {
     $processorID = substr($logEntry['message'], 34);

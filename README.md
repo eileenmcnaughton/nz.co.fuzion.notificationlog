@@ -5,7 +5,7 @@ This extension
 
 https://github.com/eileenmcnaughton/nz.co.fuzion.notificationlog
 
-allows you to replay processing IPNS from the system log - e.g via drush
+allows you to replay processing IPNs from the system log - e.g via drush
 
 drush cvapi NotificationLog.retry system_log_id=xx
 
