@@ -12,12 +12,14 @@
  * @throws \CiviCRM_API3_Exception
  */
 function civicrm_api3_notification_log_process($params) {
-  $logs = civicrm_api3('SystemLog', 'get', array(
+  $processLogParams = array(
     'options' => array('limit' => 0),
     'timestamp' => array(
       'BETWEEN' => array($params['start_time'], $params['end_time']),
     ),
-  ));
+  );
+  CRM_Core_Error::debug_log_message('NotificationLog.process START. Params: ' . print_r($processLogParams, TRUE));
+  $logs = civicrm_api3('SystemLog', 'get', $processLogParams);
   $errors = array();
   foreach ($logs['values'] as $id => $values) {
     try {
@@ -32,6 +34,7 @@ function civicrm_api3_notification_log_process($params) {
       }
     }
   }
+  CRM_Core_Error::debug_log_message('NotificationLog.process END. Processed ' . count($logs['values']) . ' IPNs');
   return civicrm_api3_create_success($logs['values'], $params, 'NotificationLog', 'process');
 }
 
