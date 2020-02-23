@@ -41,6 +41,9 @@ function _civicrm_api3_notification_log_process($logEntry) {
   if (substr($logEntry['message'], 0, 36) == 'payment_notification processor_name=') {
     $processorName = substr($logEntry['message'], 36);
   }
+  elseif ($logEntry['message'] == 'payment_notification PayPal_Standard') {
+    $processorName = 'PayPal_Standard';
+  }
   elseif (substr($logEntry['message'], 0, 34) == 'payment_notification processor_id=') {
     $processorId = substr($logEntry['message'], 34);
     $processorTypeId = civicrm_api3('PaymentProcessor', 'getvalue', array('id' => $processorId, 'return' => 'payment_processor_type_id'));
@@ -49,7 +52,6 @@ function _civicrm_api3_notification_log_process($logEntry) {
   else {
     throw new API_Exception('unsupported processor');
   }
-  echo $processorName;
   // Build the parameter array for the IPN class.
   $ipnParams = array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']));
   if ($processorId) {
