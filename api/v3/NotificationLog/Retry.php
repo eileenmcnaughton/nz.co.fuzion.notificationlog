@@ -37,6 +37,7 @@ function civicrm_api3_notification_log_retry($params) {
  * @throws \API_Exception
  */
 function _civicrm_api3_notification_log_process($logEntry) {
+  $processorId = NULL;
   // Determine which style of IPN we're using and get the processor name.
   if (substr($logEntry['message'], 0, 36) == 'payment_notification processor_name=') {
     $processorName = substr($logEntry['message'], 36);
@@ -52,11 +53,19 @@ function _civicrm_api3_notification_log_process($logEntry) {
   else {
     throw new API_Exception('unsupported processor');
   }
+
   // Build the parameter array for the IPN class.
-  $ipnParams = array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']));
-  if ($processorId) {
+  if (in_array($processorName, ['AuthNet', 'PayPal', 'Paypal_Standard'])) {
+    $ipnParams = array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']));
     $ipnParams['processor_id'] = $processorId;
   }
+  else {
+    $ipnParams = $logEntry['context'];
+    if ($processorId) {
+      $_GET['processor_id'] = $processorId;
+    }
+  }
+
   // Pick the IPN class based on the processor name.
   switch ($processorName) {
     case 'AuthNet':
@@ -69,6 +78,15 @@ function _civicrm_api3_notification_log_process($logEntry) {
 
     case 'PayPal_Standard':
       $ipnClass = new CRM_Core_Payment_PayPalIPN($ipnParams);
+      break;
+
+    case 'Stripe':
+      $ipnClass = new CRM_Core_Payment_StripeIPN($ipnParams);
+      break;
+
+    case 'AuthorizeNeteCheck':
+    case 'AuthorizeNetCreditcard':
+      $ipnClass = new CRM_Core_Payment_AuthNetIPN($ipnParams);
       break;
 
     default:
