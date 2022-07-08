@@ -12,17 +12,6 @@ function notificationlog_civicrm_config(&$config) {
 }
 
 /**
- * Implements hook_civicrm_xmlMenu().
- *
- * @param $files array(string)
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
- */
-function notificationlog_civicrm_xmlMenu(&$files) {
-  _notificationlog_civix_civicrm_xmlMenu($files);
-}
-
-/**
  * Implements hook_civicrm_install().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
@@ -75,40 +64,6 @@ function notificationlog_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
 }
 
 /**
- * Implements hook_civicrm_managed().
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
- */
-function notificationlog_civicrm_managed(&$entities) {
-  _notificationlog_civix_civicrm_managed($entities);
-}
-
-/**
- * Implements hook_civicrm_caseTypes().
- *
- * Generate a list of case-types
- *
- * Note: This hook only runs in CiviCRM 4.4+.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
- */
-function notificationlog_civicrm_caseTypes(&$caseTypes) {
-  _notificationlog_civix_civicrm_caseTypes($caseTypes);
-}
-
-/**
- * Implements hook_civicrm_alterSettingsFolders().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
- */
-function notificationlog_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _notificationlog_civix_civicrm_alterSettingsFolders($metaDataFolders);
-}
-
-/**
  * Functions below this ship commented out. Uncomment as required.
  *
 
@@ -117,8 +72,5 @@ function notificationlog_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) 
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
  *
-function notificationlog_civicrm_preProcess($formName, &$form) {
-
-}
 
 */
