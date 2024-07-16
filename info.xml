@@ -20,6 +20,9 @@
   </compatibility>
   <civix>
     <namespace>CRM/Notificationlog</namespace>
-    <format>22.05.0</format>
+    <format>23.02.1</format>
   </civix>
+  <classloader>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
 </extension>
