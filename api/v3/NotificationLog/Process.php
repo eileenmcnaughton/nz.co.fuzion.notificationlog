@@ -8,8 +8,8 @@
  *
  * @return array
  *   API result array
- * @throws \API_Exception
- * @throws \CiviCRM_API3_Exception
+ * @throws \CRM_Core_Exception
+ * @throws \CRM_Core_Exception
  */
 function civicrm_api3_notification_log_process($params) {
   $processLogParams = array(
@@ -25,7 +25,7 @@ function civicrm_api3_notification_log_process($params) {
     try {
       civicrm_api3('NotificationLog', 'retry', array('system_log_id' => $values['id']));
     }
-    catch (CiviCRM_API3_Exception $e) {
+    catch (CRM_Core_Exception $e) {
       if ($e->getMessage() == 'DB Error: already exists') {
         $logs['values'][$id]['already_processed'] = TRUE;
       }

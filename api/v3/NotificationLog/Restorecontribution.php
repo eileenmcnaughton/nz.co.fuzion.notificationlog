@@ -10,8 +10,8 @@
  *
  * @return array
  *   API result array
- * @throws \API_Exception
- * @throws \CiviCRM_API3_Exception
+ * @throws \CRM_Core_Exception
+ * @throws \CRM_Core_Exception
  */
 function civicrm_api3_notification_log_restorecontribution($params) {
   $queryParams = array(1 => array($params['id'], 'Integer'));

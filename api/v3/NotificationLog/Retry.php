@@ -9,8 +9,8 @@
  *
  * @return array
  *   API result array
- * @throws \API_Exception
- * @throws \CiviCRM_API3_Exception
+ * @throws \CRM_Core_Exception
+ * @throws \CRM_Core_Exception
  */
 function civicrm_api3_notification_log_retry($params) {
   if (!empty($params['system_log_id'])) {
@@ -24,7 +24,7 @@ function civicrm_api3_notification_log_retry($params) {
     if (_civicrm_api3_notification_log_process($logEntry)) {
       return civicrm_api3_create_success(1, $params);
     }
-    throw new API_Exception('payment retry failed');
+    throw new CRM_Core_Exception('payment retry failed');
   }
 }
 
@@ -34,7 +34,7 @@ function civicrm_api3_notification_log_retry($params) {
  * @param array $logEntry
  *
  * @return bool
- * @throws \API_Exception
+ * @throws \CRM_Core_Exception
  */
 function _civicrm_api3_notification_log_process($logEntry) {
   // Determine which style of IPN we're using and get the processor name.
@@ -50,7 +50,7 @@ function _civicrm_api3_notification_log_process($logEntry) {
     $processorName = civicrm_api3('PaymentProcessorType', 'getvalue', array('id' => $processorTypeId, 'return' => 'name'));
   }
   else {
-    throw new API_Exception('unsupported processor');
+    throw new CRM_Core_Exception('unsupported processor');
   }
   // Build the parameter array for the IPN class.
   $ipnParams = array_merge(json_decode($logEntry['context'], TRUE), array('receive_date' => $logEntry['timestamp']));
@@ -72,7 +72,7 @@ function _civicrm_api3_notification_log_process($logEntry) {
       break;
 
     default:
-      throw new API_Exception('unsupported processor');
+      throw new CRM_Core_Exception('unsupported processor');
   }
   $ipnClass->main();
   return TRUE;
