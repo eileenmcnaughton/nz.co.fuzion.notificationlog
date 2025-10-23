@@ -9,7 +9,7 @@ function _civicrm_api3_notification_log_retryfromcsv_spec(&$params) {
 function civicrm_api3_notification_log_retryfromcsv($params) {
   $csv_file = file($params['csv']);
   if ($csv_file === FALSE) {
-    throw new API_Exception('an error occurred reading from CSV file');
+    throw new CRM_Core_Exception('an error occurred reading from CSV file');
   }
 
   $logs = array_map('str_getcsv', $csv_file);
