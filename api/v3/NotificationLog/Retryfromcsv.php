@@ -20,7 +20,7 @@ function civicrm_api3_notification_log_retryfromcsv($params) {
       $headers = $log;
       continue;
     }
-    $response = array();
+    $response = [];
     foreach ($log as $j => $entry) {
       $response[$headers[$j]] = $entry;
     }
@@ -38,7 +38,7 @@ function civicrm_api3_notification_log_retryfromcsv($params) {
 
     if ($params['payment_processor'] == 'AuthNet') {
       $anet = new CRM_Core_Payment_AuthorizeNetIPN(
-        array_merge($response, array('x_subscription_id' => $subscription_id, 'receive_date' => $submit_date->format('Y-m-d H:i:s')))
+        array_merge($response, ['x_subscription_id' => $subscription_id, 'receive_date' => $submit_date->format('Y-m-d H:i:s')])
       );
       try {
         $anet->main();

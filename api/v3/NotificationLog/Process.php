@@ -12,18 +12,18 @@
  * @throws \CRM_Core_Exception
  */
 function civicrm_api3_notification_log_process($params) {
-  $processLogParams = array(
-    'options' => array('limit' => 0),
-    'timestamp' => array(
-      'BETWEEN' => array($params['start_time'], $params['end_time']),
-    ),
-  );
+  $processLogParams = [
+    'options' => ['limit' => 0],
+    'timestamp' => [
+      'BETWEEN' => [$params['start_time'], $params['end_time']],
+    ],
+  ];
   CRM_Core_Error::debug_log_message('NotificationLog.process START. Params: ' . print_r($processLogParams, TRUE));
   $logs = civicrm_api3('SystemLog', 'get', $processLogParams);
-  $errors = array();
+  $errors = [];
   foreach ($logs['values'] as $id => $values) {
     try {
-      civicrm_api3('NotificationLog', 'retry', array('system_log_id' => $values['id']));
+      civicrm_api3('NotificationLog', 'retry', ['system_log_id' => $values['id']]);
     }
     catch (CRM_Core_Exception $e) {
       if ($e->getMessage() == 'DB Error: already exists') {

@@ -14,20 +14,20 @@
  * @throws \CRM_Core_Exception
  */
 function civicrm_api3_notification_log_restorecontribution($params) {
-  $queryParams = array(1 => array($params['id'], 'Integer'));
-  $query = array();
+  $queryParams = [1 => [$params['id'], 'Integer']];
+  $query = [];
   $contributionResult = CRM_Core_DAO::executeQuery(
     "SELECT * FROM log_civicrm_contribution WHERE id = %1 AND log_action = 'Delete'",
     $queryParams
   );
-  $contributionFields = civicrm_api3('contribution', 'getfields', array('action' => 'create'));
-  $lineItemFields = civicrm_api3('line_item', 'getfields', array('action' => 'create'));
+  $contributionFields = civicrm_api3('contribution', 'getfields', ['action' => 'create']);
+  $lineItemFields = civicrm_api3('line_item', 'getfields', ['action' => 'create']);
   // We want to INSERT this contribution with an ID - DAO won't allow that!
   // also we can't retrieve from log in the same transaction as we save to contribution
   // triggers will prevent that.
 
   while ($contributionResult->fetch()) {
-    $insertParams = array();
+    $insertParams = [];
     foreach ($contributionFields['values'] as $field => $spec) {
       if (!empty($contributionResult->$field)) {
         if ($field != 'address_id') {
@@ -43,7 +43,7 @@ function civicrm_api3_notification_log_restorecontribution($params) {
       $queryParams
     );
     while ($lineItemResult->fetch()) {
-      $insertParams = array();
+      $insertParams = [];
       foreach ($lineItemFields['values'] as $field => $spec) {
         if (!empty($lineItemResult->$field)) {
           $insertParams[$field] = "'" . $lineItemResult->$field . "'";
